@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://cross-circle-credentials.tscn" type="PackedScene" id=1]
+[ext_resource path="res://cross-circle-main.tscn" type="PackedScene" id=2]
+
+[node name="root" type="Node"]
+
+[node name="cross-circle-main" parent="." instance=ExtResource( 2 )]
+
+[node name="cross-circle-credentials" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1023.93, 1.181 )
