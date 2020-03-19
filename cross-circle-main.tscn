@@ -9,7 +9,7 @@
 [ext_resource path="res://CreteRound-Regular.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://CreteRound_dynamicfont.tres" type="DynamicFont" id=8]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=8]
 size = 20
 font_data = ExtResource( 7 )
 
@@ -17,15 +17,15 @@ font_data = ExtResource( 7 )
 size = 20
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=9]
 size = 20
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=10]
 size = 20
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=11]
 size = 20
 font_data = ExtResource( 7 )
 
@@ -39,6 +39,9 @@ font_data = ExtResource( 7 )
 
 [node name="cross-circle-main" type="Node2D"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CCControl" type="Control" parent="."]
 margin_right = 1024.0
@@ -56,7 +59,6 @@ margin_right = 1024.0
 margin_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
-hint_tooltip = "You cannot click here!"
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 1
@@ -95,7 +97,7 @@ margin_right = 894.0
 margin_bottom = 133.0
 hint_tooltip = "Move mouse 
 to the right!"
-custom_fonts/normal_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0.980392, 0.984314, 0.898039, 1 )
 bbcode_enabled = true
 bbcode_text = "[waves, freq=2]Play as"
@@ -138,7 +140,7 @@ margin_right = 984.0
 margin_bottom = 568.0
 hint_tooltip = "Doyou really, really
  want to end this game?"
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 9 )
 text = "End Game"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -151,7 +153,7 @@ margin_right = 902.0
 margin_bottom = 169.0
 hint_tooltip = "Move mouse 
 to the right!"
-custom_fonts/normal_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 0.980392, 0.984314, 0.898039, 1 )
 bbcode_enabled = true
 bbcode_text = "[waves, freq=2]Size[waves]"
@@ -167,7 +169,7 @@ margin_right = 964.0
 margin_bottom = 169.0
 hint_tooltip = "Change size of field
  from 21x21 to 9x9"
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 11 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 text = "21"
 items = [ "21", null, false, 0, null, "19", null, false, 1, null, "17", null, false, 2, null, "15", null, false, 3, null, "13", null, false, 4, null, "11", null, false, 5, null, "9", null, false, 6, null ]
