@@ -8,4 +8,4 @@
 [node name="cross-circle-main" parent="." instance=ExtResource( 2 )]
 
 [node name="cross-circle-credentials" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1023.93, 1.181 )
+position = Vector2( 1024, -3 )
