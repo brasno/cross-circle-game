@@ -56,6 +56,7 @@ margin_right = 1024.0
 margin_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
+hint_tooltip = "You cannot click here!"
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 1
@@ -92,6 +93,8 @@ margin_left = 821.0
 margin_top = 80.0
 margin_right = 894.0
 margin_bottom = 133.0
+hint_tooltip = "Move mouse 
+to the right!"
 custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0.980392, 0.984314, 0.898039, 1 )
 bbcode_enabled = true
@@ -120,6 +123,8 @@ margin_left = 872.0
 margin_top = 477.0
 margin_right = 981.0
 margin_bottom = 509.0
+hint_tooltip = "This will restart game
+with choosen parameters"
 custom_fonts/font = SubResource( 2 )
 text = "New Game"
 __meta__ = {
@@ -131,6 +136,8 @@ margin_left = 872.0
 margin_top = 536.0
 margin_right = 984.0
 margin_bottom = 568.0
+hint_tooltip = "Doyou really, really
+ want to end this game?"
 custom_fonts/font = SubResource( 3 )
 text = "End Game"
 __meta__ = {
@@ -142,6 +149,8 @@ margin_left = 846.0
 margin_top = 137.0
 margin_right = 902.0
 margin_bottom = 169.0
+hint_tooltip = "Move mouse 
+to the right!"
 custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 0.980392, 0.984314, 0.898039, 1 )
 bbcode_enabled = true
@@ -156,6 +165,8 @@ margin_left = 895.0
 margin_top = 137.0
 margin_right = 964.0
 margin_bottom = 169.0
+hint_tooltip = "Change size of field
+ from 21x21 to 9x9"
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 text = "21"
@@ -170,6 +181,8 @@ margin_left = 810.0
 margin_top = 184.0
 margin_right = 891.0
 margin_bottom = 224.0
+hint_tooltip = "Move mouse 
+to the right!"
 custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0.980392, 0.984314, 0.898039, 1 )
 bbcode_enabled = true
@@ -184,6 +197,8 @@ margin_left = 897.0
 margin_top = 179.0
 margin_right = 964.0
 margin_bottom = 211.0
+hint_tooltip = "Change AI level.  
+Bigger is smarter!"
 custom_fonts/font = SubResource( 7 )
 text = "1"
 items = [ "1", null, false, 0, null, "2", null, false, 1, null, "3", null, false, 2, null, "4", null, false, 3, null, "5", null, false, 4, null ]
@@ -197,6 +212,8 @@ margin_left = 728.0
 margin_top = 536.0
 margin_right = 848.0
 margin_bottom = 568.0
+hint_tooltip = "People (and SW) which
+are responsible"
 custom_fonts/font = ExtResource( 8 )
 text = "Credentials"
 __meta__ = {
