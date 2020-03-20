@@ -15,7 +15,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
+var ret
 func _on_OKButton_pressed():
-	get_tree().change_scene("res://cross-circle-main.tscn")
+	ret=get_tree().change_scene("res://cross-circle-main.tscn")
 	pass # Replace with function body.

@@ -18,9 +18,11 @@ _global_script_class_icons={
 config/name="cross-circle-game"
 config/description="This is the game for x O, playing on 21x21 grid. Winner is one who first connects five."
 run/main_scene="res://cross-circle-main.tscn"
-run/disable_stdout=true
-run/disable_stderr=true
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://global.gd"
 
 [display]
 
