@@ -19,3 +19,9 @@ var ret
 func _on_OKButton_pressed():
 	ret=get_tree().change_scene("res://cross-circle-main.tscn")
 	pass # Replace with function body.
+
+
+func _draw():
+	draw_line(Vector2(0,0),Vector2(600,200),"#123456",5.0)
+	draw_circle(Vector2(60+2*100, 60+2*100), 40, "#FFFFFF")
+	pass # Replace with function body.

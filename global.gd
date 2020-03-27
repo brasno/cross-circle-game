@@ -1,17 +1,18 @@
 extends Node
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+# maximun width and height
 const WIDTH = 21
 const HEIGHT = 21 
+const CROSS = 0
+const CIRCLE = 1
 var matrica=[]
 var sizes=[21,19,17,15,13,11,9]
 var size_index=0
+var current_size=21
 var AILevel_index=0
 var x
 var y
+onready var tilemap 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
