@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://paper.jpg" type="Texture" id=1]
 [ext_resource path="res://cross-circle-main.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://CreteRound_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://x24.png" type="Texture" id=9]
 [ext_resource path="res://o24.png" type="Texture" id=10]
+[ext_resource path="res://CreteRound_dynamicfont_26.tres" type="DynamicFont" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -79,8 +80,6 @@ format = 1
 
 [node name="SpriteX" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
 visible = false
-position = Vector2( 56, 48 )
-scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 9 )
 
 [node name="SpriteO" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
@@ -94,36 +93,6 @@ position = Vector2( 274.947, 276 )
 scale = Vector2( 0.39375, 0.7 )
 texture = ExtResource( 1 )
 color = Color( 0.905882, 0.909804, 0.462745, 1 )
-
-[node name="decoration" type="Node" parent="CCControl/CCNode2D/TextureRect"]
-
-[node name="x49" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 616, 200 )
-texture = ExtResource( 4 )
-
-[node name="o49" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 712, 200 )
-texture = ExtResource( 5 )
-
-[node name="x51" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 712, 152 )
-texture = ExtResource( 4 )
-
-[node name="x50" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 712, 248 )
-texture = ExtResource( 4 )
-
-[node name="x48" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 664, 200 )
-texture = ExtResource( 4 )
-
-[node name="o48" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 616, 152 )
-texture = ExtResource( 5 )
-
-[node name="o50" type="Sprite" parent="CCControl/CCNode2D/TextureRect/decoration"]
-position = Vector2( 664, 152 )
-texture = ExtResource( 5 )
 
 [node name="PlayAsRichText" type="RichTextLabel" parent="CCControl/CCNode2D"]
 margin_left = 821.0
@@ -156,10 +125,10 @@ __meta__ = {
 }
 
 [node name="NewButton" type="Button" parent="CCControl/CCNode2D"]
-margin_left = 872.0
-margin_top = 480.0
-margin_right = 984.0
-margin_bottom = 512.0
+margin_left = 854.0
+margin_top = 251.0
+margin_right = 966.0
+margin_bottom = 283.0
 hint_tooltip = "This will restart game
 with choosen parameters"
 custom_fonts/font = SubResource( 2 )
@@ -169,9 +138,9 @@ __meta__ = {
 }
 
 [node name="EndButton" type="Button" parent="CCControl/CCNode2D"]
-margin_left = 872.0
+margin_left = 856.0
 margin_top = 536.0
-margin_right = 984.0
+margin_right = 968.0
 margin_bottom = 568.0
 hint_tooltip = "Doyou really, really
  want to end this game?"
@@ -182,6 +151,7 @@ __meta__ = {
 }
 
 [node name="SizeRichText" type="RichTextLabel" parent="CCControl/CCNode2D"]
+visible = false
 margin_left = 846.0
 margin_top = 137.0
 margin_right = 902.0
@@ -198,6 +168,7 @@ __meta__ = {
 }
 
 [node name="SizeOption" type="OptionButton" parent="CCControl/CCNode2D"]
+visible = false
 margin_left = 895.0
 margin_top = 137.0
 margin_right = 964.0
@@ -244,10 +215,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ScoreRichText" type="RichTextLabel" parent="CCControl/CCNode2D"]
+margin_left = 640.0
+margin_top = 16.0
+margin_right = 984.0
+margin_bottom = 64.0
+custom_fonts/normal_font = ExtResource( 11 )
+bbcode_enabled = true
+bbcode_text = "[color=#fafacc]Score:		You: 0		AI: 0"
+text = "Score:		You: 0		AI: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CredentialsButton" type="Button" parent="CCControl"]
-margin_left = 728.0
+margin_left = 712.0
 margin_top = 536.0
-margin_right = 848.0
+margin_right = 832.0
 margin_bottom = 568.0
 hint_tooltip = "People (and SW) which
 are responsible"
@@ -257,100 +241,259 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="MyLine" type="Line2D" parent="CCControl"]
+width = 1.0
+default_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+
 [node name="NewPopup" type="Popup" parent="CCControl"]
-margin_left = 864.0
-margin_top = 461.0
-margin_right = 992.0
-margin_bottom = 525.0
+anchor_right = 1.143
+anchor_bottom = 2.0
+margin_left = 848.0
+margin_top = 234.0
+margin_right = -194.432
+margin_bottom = -902.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="CCControl/NewPopup"]
-margin_right = 128.0
-margin_bottom = 64.0
+margin_left = -6.0
+margin_right = 130.0
+margin_bottom = 67.0
 texture = ExtResource( 6 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="NewOKButton" type="Button" parent="CCControl/NewPopup"]
-margin_left = 6.45996
-margin_top = 15.4066
-margin_right = 45.46
-margin_bottom = 47.4066
-custom_fonts/font = ExtResource( 8 )
-text = "OK"
-
-[node name="NewCancelButton" type="Button" parent="CCControl/NewPopup"]
-margin_left = 49.4867
-margin_top = 15.4333
-margin_right = 121.487
-margin_bottom = 47.4333
-custom_fonts/font = ExtResource( 8 )
-text = "Cancel"
-
-[node name="EndPopup" type="Popup" parent="CCControl"]
-margin_left = 865.0
-margin_top = 520.0
-margin_right = 993.0
-margin_bottom = 582.0
-
-[node name="TextureRect" type="TextureRect" parent="CCControl/EndPopup"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 6 )
-
-[node name="EndOKButton" type="Button" parent="CCControl/EndPopup"]
-margin_left = 7.0
+margin_left = 6.0
 margin_top = 15.0
-margin_right = 46.0
+margin_right = 45.0
 margin_bottom = 47.0
 custom_fonts/font = ExtResource( 8 )
 text = "OK"
 
-[node name="EndCancelButton" type="Button" parent="CCControl/EndPopup"]
-margin_left = 49.3265
-margin_top = 15.3265
-margin_right = 121.327
-margin_bottom = 47.3265
+[node name="NewCancelButton" type="Button" parent="CCControl/NewPopup"]
+margin_left = 49.0
+margin_top = 15.0
+margin_right = 121.0
+margin_bottom = 47.0
 custom_fonts/font = ExtResource( 8 )
 text = "Cancel"
 
-[node name="MyLine" type="Line2D" parent="CCControl"]
-width = 1.0
-default_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+[node name="EndPopup" type="Popup" parent="CCControl"]
+margin_left = 848.0
+margin_top = 519.0
+margin_right = 984.0
+margin_bottom = 581.0
+
+[node name="TextureRect" type="TextureRect" parent="CCControl/EndPopup"]
+margin_right = 135.0
+margin_bottom = 64.0
+texture = ExtResource( 6 )
+expand = true
+
+[node name="EndOKButton" type="Button" parent="CCControl/EndPopup"]
+margin_left = 7.0
+margin_top = 16.0
+margin_right = 46.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 8 )
+text = "OK"
+
+[node name="EndCancelButton" type="Button" parent="CCControl/EndPopup"]
+anchor_left = -0.0181756
+anchor_top = 0.0108633
+anchor_right = 0.130258
+anchor_bottom = 0.139896
+margin_left = 57.3265
+margin_top = 15.3265
+margin_right = 110.327
+margin_bottom = 39.3265
+custom_fonts/font = ExtResource( 8 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SomebodyWonPopup" type="Popup" parent="CCControl"]
-margin_left = 32.0
-margin_top = 123.0
-margin_right = 504.0
-margin_bottom = 416.0
+visible = true
+margin_left = 546.0
+margin_top = 295.0
+margin_right = 810.0
+margin_bottom = 460.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="CCControl/SomebodyWonPopup"]
-margin_right = 456.0
-margin_bottom = 285.0
+margin_right = 264.0
+margin_bottom = 165.0
 texture = ExtResource( 6 )
 expand = true
 
 [node name="WonTextLabel" type="RichTextLabel" parent="CCControl/SomebodyWonPopup/TextureRect"]
-margin_left = 96.0
-margin_top = 45.0
-margin_right = 400.0
-margin_bottom = 165.0
-custom_fonts/normal_font = ExtResource( 8 )
+margin_left = 54.0
+margin_top = 33.0
+margin_right = 214.0
+margin_bottom = 105.0
+custom_fonts/normal_font = ExtResource( 11 )
 custom_colors/default_color = Color( 0.54902, 0.0941176, 0.0941176, 1 )
 bbcode_enabled = true
-bbcode_text = "Bravo!"
+bbcode_text = "[center]Bravo!"
 text = "Bravo!"
 
 [node name="WonOKButton" type="Button" parent="CCControl/SomebodyWonPopup"]
-margin_left = 208.0
-margin_top = 237.0
-margin_right = 239.0
-margin_bottom = 257.0
+margin_left = 112.0
+margin_top = 113.0
+margin_right = 151.0
+margin_bottom = 145.0
 custom_fonts/font = ExtResource( 8 )
 text = "OK"
+
+[node name="Think" type="Timer" parent="CCControl"]
+wait_time = 3.0
+autostart = true
+
+[node name="TimerPopup" type="Popup" parent="CCControl"]
+margin_left = 200.0
+margin_top = 280.0
+margin_right = 416.0
+margin_bottom = 408.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="CCControl/TimerPopup"]
+margin_right = 216.0
+margin_bottom = 128.0
+texture = ExtResource( 6 )
+expand = true
+
+[node name="TimerTextLabel" type="RichTextLabel" parent="CCControl/TimerPopup/TextureRect"]
+margin_left = 3.0
+margin_top = 20.0
+margin_right = 208.0
+margin_bottom = 60.0
+custom_fonts/normal_font = ExtResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=fuchsia][tornado radius=5 freq=5]Do something!"
+text = "Do something!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimerOKButton" type="Button" parent="CCControl/TimerPopup"]
+margin_left = 84.0
+margin_top = 80.0
+margin_right = 123.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 8 )
+text = "OK"
+
+[node name="CheckBoxPlayPopup" type="Popup" parent="CCControl"]
+visible = true
+margin_left = 552.0
+margin_top = 72.0
+margin_right = 808.0
+margin_bottom = 248.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="CCControl/CheckBoxPlayPopup"]
+anchor_left = 0.423
+anchor_top = 0.062
+anchor_right = 0.423
+anchor_bottom = 0.062
+margin_left = -108.288
+margin_top = -9.92
+margin_right = 147.712
+margin_bottom = 166.08
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBoxPlayLabel" type="RichTextLabel" parent="CCControl/CheckBoxPlayPopup/TextureRect"]
+margin_left = 16.0
+margin_top = 7.0
+margin_right = 248.0
+margin_bottom = 119.0
+custom_fonts/normal_font = ExtResource( 11 )
+bbcode_enabled = true
+bbcode_text = "[center][color=#8c1818][tornado radius=1 freq=1]This will start new game with oposite symbol!"
+text = "This will start new game with oposite symbol!"
+
+[node name="CheckBoxPlayOK" type="Button" parent="CCControl/CheckBoxPlayPopup"]
+margin_left = 48.0
+margin_top = 129.0
+margin_right = 87.0
+margin_bottom = 161.0
+custom_fonts/font = ExtResource( 8 )
+text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBoxPlayCancel" type="Button" parent="CCControl/CheckBoxPlayPopup"]
+margin_left = 128.0
+margin_top = 129.0
+margin_right = 200.0
+margin_bottom = 161.0
+custom_fonts/font = ExtResource( 8 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="decoration" type="Node" parent="CCControl"]
+
+[node name="x49" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 616, 200 )
+texture = ExtResource( 4 )
+
+[node name="o49" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 712, 200 )
+texture = ExtResource( 5 )
+
+[node name="x51" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 712, 152 )
+texture = ExtResource( 4 )
+
+[node name="x50" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 712, 248 )
+texture = ExtResource( 4 )
+
+[node name="x48" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 664, 200 )
+texture = ExtResource( 4 )
+
+[node name="o48" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 616, 152 )
+texture = ExtResource( 5 )
+
+[node name="o50" type="Sprite" parent="CCControl/decoration"]
+visible = false
+position = Vector2( 664, 152 )
+texture = ExtResource( 5 )
+
+[node name="TimerRichLabel" type="RichTextLabel" parent="CCControl"]
+margin_top = 576.0
+margin_right = 160.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="ready" from="CCControl/CCNode2D" to="." method="_on_CCNode2D_ready"]
 [connection signal="gui_input" from="CCControl/CCNode2D/TextureRect" to="." method="_on_TextureRect_gui_input"]
 [connection signal="mouse_entered" from="CCControl/CCNode2D/CheckBoxPlay" to="." method="_on_CheckBoxPlay_mouse_entered"]
@@ -359,10 +502,19 @@ text = "OK"
 [connection signal="pressed" from="CCControl/CCNode2D/NewButton" to="." method="_on_NewButton_pressed"]
 [connection signal="pressed" from="CCControl/CCNode2D/EndButton" to="." method="_on_EndButton_pressed"]
 [connection signal="item_selected" from="CCControl/CCNode2D/SizeOption" to="." method="_on_SizeOption_item_selected"]
+[connection signal="pressed" from="CCControl/CCNode2D/SizeOption" to="." method="_on_SizeOption_pressed"]
+[connection signal="toggled" from="CCControl/CCNode2D/SizeOption" to="." method="_on_SizeOption_toggled"]
 [connection signal="item_selected" from="CCControl/CCNode2D/AILevelOption" to="." method="_on_AILevelOption_item_selected"]
+[connection signal="pressed" from="CCControl/CCNode2D/AILevelOption" to="." method="_on_AILevelOption_pressed"]
+[connection signal="toggled" from="CCControl/CCNode2D/AILevelOption" to="." method="_on_AILevelOption_toggled"]
 [connection signal="pressed" from="CCControl/CredentialsButton" to="." method="_on_CredentialsButton_pressed"]
 [connection signal="pressed" from="CCControl/NewPopup/NewOKButton" to="." method="_on_NewOKButton_pressed"]
 [connection signal="pressed" from="CCControl/NewPopup/NewCancelButton" to="." method="_on_NewCancelButton_pressed"]
 [connection signal="pressed" from="CCControl/EndPopup/EndOKButton" to="." method="_on_EndOKButton_pressed"]
 [connection signal="pressed" from="CCControl/EndPopup/EndCancelButton" to="." method="_on_EndCancelButton_pressed"]
 [connection signal="pressed" from="CCControl/SomebodyWonPopup/WonOKButton" to="." method="_on_WonOKButton_pressed"]
+[connection signal="timeout" from="CCControl/Think" to="." method="_on_Think_timeout"]
+[connection signal="pressed" from="CCControl/TimerPopup/TimerOKButton" to="." method="_on_TimerOKButton_pressed"]
+[connection signal="pressed" from="CCControl/CheckBoxPlayPopup/CheckBoxPlayOK" to="." method="_on_CheckBoxPlayOK_pressed"]
+[connection signal="pressed" from="CCControl/CheckBoxPlayPopup/CheckBoxPlayCancel" to="." method="_on_CheckBoxPlayCancel_pressed"]
+[connection signal="ready" from="CCControl/TimerRichLabel" to="." method="_on_TimerRichLabel_ready"]
