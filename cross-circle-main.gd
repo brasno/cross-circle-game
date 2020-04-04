@@ -1,5 +1,5 @@
 extends Node2D
-# variables for loops
+# variables for loops: x, y, z
 var x
 var y
 var z
@@ -69,7 +69,12 @@ func draw_grid():
 func check_CheckBoxPlay():
 	if Global.current_symbol!=Global.CROSS:
 		$CCControl/CCNode2D/CheckBoxPlay.pressed=!$CCControl/CCNode2D/CheckBoxPlay.pressed
-	
+# End of check_CheckBoxPlay()
+
+func refresh_score():
+	$CCControl/CCNode2D/ScoreRichText.bbcode_text="Score:\t\tYou:"+String(Global.score)+"\t\tAI:"+String(Global.AIscore)
+# End of refresh_score()
+
 # Called when the node enters the scene tree for the first time.
 # Here are all things needed to restore scene.
 func _ready():
@@ -77,6 +82,7 @@ func _ready():
 	draw_grid()
 	setup_move()
 	check_CheckBoxPlay()
+	refresh_score()
 	start_timer()
 # End of _ready()
 
@@ -149,7 +155,7 @@ func _on_CCNode2D_ready():
 	print("started CCNode2D")
 	for x in range(1,Global.WIDTH+1):
 		for y in range(1,Global.HEIGHT+1):
-			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(x,y,Global.matrica[x-1][y-1])
+			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(x,y,Global.matrix[x-1][y-1])
 	$CCControl/CCNode2D/AILevelOption.select(Global.AILevel_index)
 	$CCControl/CCNode2D/SizeOption.select(Global.size_index)
 	
@@ -168,21 +174,21 @@ func check_move():
 # type is CROSS or CIRCLE
 	for x in range(0,Global.current_size):
 		for y in range(0,Global.current_size):
-			if Global.matrica[x][y]!=-1:
-				type=Global.matrica[x][y]
+			if Global.matrix[x][y]!=Global.EMPTY:
+				type=Global.matrix[x][y]
 				countR=1
 				countB=1
 				countLB=1
 				countRB=1
 # Now, check right, down, left-down and right-down
 				for z in range(1,5):
-					if x+z < Global.current_size and Global.matrica[x+z][y]==type:
+					if x+z < Global.current_size and Global.matrix[x+z][y]==type:
 						countR+=1
-					if y+z < Global.current_size and Global.matrica[x][y+z]==type:
+					if y+z < Global.current_size and Global.matrix[x][y+z]==type:
 						countB+=1
-					if x-z >= 0 and y+z < Global.current_size and Global.matrica[x-z][y+z]==type:
+					if x-z >= 0 and y+z < Global.current_size and Global.matrix[x-z][y+z]==type:
 						countLB+=1
-					if x+z < Global.current_size and y+z < Global.current_size and Global.matrica[x+z][y+z]==type:
+					if x+z < Global.current_size and y+z < Global.current_size and Global.matrix[x+z][y+z]==type:
 						countRB+=1
 				if countR==5:
 					print ("CountR=5 ",x," ",y)
@@ -205,14 +211,14 @@ func _on_TextureRect_gui_input(event):
 	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
 		var tilemap = $CCControl/CCNode2D/TextureRect/TileMap
 		var tile_pos = tilemap.world_to_map(event.position)
-		if tile_pos.x>0 and tile_pos.x<=Global.WIDTH and tile_pos.y>0 and tile_pos.y<=Global.HEIGHT: 
+		if (tile_pos.x>0) and (tile_pos.x<=Global.WIDTH) and (tile_pos.y>0) and (tile_pos.y<=Global.HEIGHT) and (Global.matrix[tile_pos.x-1][tile_pos.y-1]==Global.EMPTY): 
 			start_timer()
 			if event.button_index== BUTTON_LEFT:
 				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,Global.current_symbol)
-				Global.matrica[tile_pos.x-1][tile_pos.y-1]=Global.current_symbol
+				Global.matrix[tile_pos.x-1][tile_pos.y-1]=Global.current_symbol
 #			else:
 #				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,0)
-#				Global.matrica[tile_pos.x-1][tile_pos.y-1]=0
+#				Global.matrix[tile_pos.x-1][tile_pos.y-1]=0
 			var result=check_move()
 			if result!=1:
 # AI play
@@ -226,7 +232,7 @@ func _on_TextureRect_gui_input(event):
 				else:
 					$CCControl/SomebodyWonPopup/TextureRect/WonTextLabel.text="You lost..."
 					Global.AIscore+=1
-				$CCControl/CCNode2D/ScoreRichText.bbcode_text="Score:\t\tYou:"+String(Global.score)+"\t\tAI:"+String(Global.AIscore)
+				refresh_score()
 				pause_timer()
 				$CCControl/SomebodyWonPopup.visible=!$CCControl/SomebodyWonPopup.visible
 				$CCControl/SomebodyWonPopup.show_modal(true)
@@ -237,8 +243,8 @@ func _on_TextureRect_gui_input(event):
 func new_game():
 	for x in range(1,Global.WIDTH+1):
 		for y in range(1,Global.HEIGHT+1):
-			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(x,y,-1)
-			Global.matrica[x-1][y-1]=-1
+			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(x,y,Global.EMPTY)
+			Global.matrix[x-1][y-1]=Global.EMPTY
 	$CCControl/CCNode2D/ScoreRichText.bbcode_text="Score:\t\tYou:"+String(Global.score)+"\t\tAI:"+String(Global.AIscore)
 	start_timer()
 # End of new_game()
@@ -353,13 +359,13 @@ func choose_move(number):
 		
 		for x in range(0,Global.current_size):
 			for y in range(0,Global.current_size):
-				if Global.matrica[x][y]==-1:
+				if Global.matrix[x][y]==Global.EMPTY:
 # right
 					z=1
 					dirR=0
 					while z<5:
 						if (x+z)<Global.current_size:
-							dirR=dirR*10+Global.matrica[x+z][y]+1;
+							dirR=dirR*10+Global.matrix[x+z][y]+1;
 						else:
 							dirR=dirR*10;
 						z+=1
@@ -368,7 +374,7 @@ func choose_move(number):
 					dirD=0
 					while z<5:
 						if (y+z)<Global.current_size:
-							dirD=dirD*10+Global.matrica[x][y+z]+1;
+							dirD=dirD*10+Global.matrix[x][y+z]+1;
 						else:
 							dirD=dirD*10;
 						z+=1
@@ -377,7 +383,7 @@ func choose_move(number):
 					dirL=0
 					while z<5:
 						if (x-z)>=0:
-							dirL=dirL*10+Global.matrica[x-z][y]+1;
+							dirL=dirL*10+Global.matrix[x-z][y]+1;
 						else:
 							dirL=dirL*10;
 						z+=1
@@ -386,7 +392,7 @@ func choose_move(number):
 					dirU=0
 					while z<5:
 						if (y-z)>=0:
-							dirU=dirU*10+Global.matrica[x][y-z]+1;
+							dirU=dirU*10+Global.matrix[x][y-z]+1;
 						else:
 							dirU=dirU*10;
 						z+=1
@@ -395,7 +401,7 @@ func choose_move(number):
 					dirRU=0
 					while z<5:
 						if ((x+z)<Global.current_size) and ((y-z)>=0):
-							dirRU=dirRU*10+Global.matrica[x+z][y-z]+1;
+							dirRU=dirRU*10+Global.matrix[x+z][y-z]+1;
 						else:
 							dirRU=dirRU*10;
 						z+=1
@@ -404,7 +410,7 @@ func choose_move(number):
 					dirRD=0
 					while z<5:
 						if ((x+z)<Global.current_size) and ((y+z)<Global.current_size):
-							dirRD=dirRD*10+Global.matrica[x+z][y+z]+1;
+							dirRD=dirRD*10+Global.matrix[x+z][y+z]+1;
 						else:
 							dirRD=dirRD*10;
 						z+=1
@@ -413,7 +419,7 @@ func choose_move(number):
 					dirLU=0
 					while z<5:
 						if ((x-z)>=0) and ((y-z)>=0):
-							dirLU=dirLU*10+Global.matrica[x-z][y-z]+1;
+							dirLU=dirLU*10+Global.matrix[x-z][y-z]+1;
 						else:
 							dirLU=dirLU*10;
 						z+=1
@@ -422,7 +428,7 @@ func choose_move(number):
 					dirLD=0
 					while z<5:
 						if (x-z)>=0 and ((y+z)<Global.current_size):
-							dirLD=dirLD*10+Global.matrica[x-z][y+z]+1;
+							dirLD=dirLD*10+Global.matrix[x-z][y+z]+1;
 						else:
 							dirLD=dirLD*10;
 						z+=1
@@ -435,19 +441,19 @@ func choose_move(number):
 					dirRU=find_weight(dirRU)
 					dirLD=find_weight(dirLD)
 					if dirL>0 and dirR>0:
-						sum=(dirL+dirR)*2
+						sum=(dirL+dirR)*10
 					else:
 						sum=dirL+dirR
 					if dirU>0 and dirD>0:
-						sum+=(dirU+dirD)*2
+						sum+=(dirU+dirD)*10
 					else:
 						sum+=dirU+dirD
 					if dirLU>0 and dirRD>0:
-						sum+=(dirLU+dirRD)*2
+						sum+=(dirLU+dirRD)*10
 					else:
 						sum+=dirLU+dirRD
 					if dirRU>0 and dirLD>0:
-						sum+=(dirRU+dirLD)*2
+						sum+=(dirRU+dirLD)*10
 					else:
 						sum+=dirRU+dirLD
 					move[x][y]=sum
@@ -463,10 +469,10 @@ func choose_move(number):
 					maxx=x
 					maxy=y
 		if (Global.current_symbol==Global.CIRCLE):
-			Global.matrica[maxx][maxy]=Global.CROSS
+			Global.matrix[maxx][maxy]=Global.CROSS
 			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(maxx+1,maxy+1,Global.CROSS)
 		else:
-			Global.matrica[maxx][maxy]=Global.CIRCLE
+			Global.matrix[maxx][maxy]=Global.CIRCLE
 			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(maxx+1,maxy+1,Global.CIRCLE)
 	else:
 		return 1
