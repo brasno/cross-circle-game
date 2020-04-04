@@ -70,6 +70,7 @@ __meta__ = {
 }
 
 [node name="TileMap" type="TileMap" parent="CCControl/CCNode2D/TextureRect"]
+position = Vector2( 0, 1 )
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 24, 24 )
 cell_quadrant_size = 22
@@ -89,7 +90,7 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 10 )
 
 [node name="Light2D" type="Light2D" parent="CCControl/CCNode2D/TextureRect"]
-position = Vector2( 274.947, 276 )
+position = Vector2( 278, 277 )
 scale = Vector2( 0.39375, 0.7 )
 texture = ExtResource( 1 )
 color = Color( 0.905882, 0.909804, 0.462745, 1 )
@@ -420,9 +421,9 @@ __meta__ = {
 
 [node name="CheckBoxPlayLabel" type="RichTextLabel" parent="CCControl/CheckBoxPlayPopup/TextureRect"]
 margin_left = 16.0
-margin_top = 7.0
+margin_top = 7.008
 margin_right = 248.0
-margin_bottom = 119.0
+margin_bottom = 119.008
 custom_fonts/normal_font = ExtResource( 11 )
 bbcode_enabled = true
 bbcode_text = "[center][color=#8c1818][tornado radius=1 freq=1]This will start new game with oposite symbol!"
@@ -449,6 +450,44 @@ text = "Cancel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Over5MovesPopup" type="Popup" parent="CCControl"]
+margin_left = 752.0
+margin_top = 233.0
+margin_right = 1008.0
+margin_bottom = 401.0
+
+[node name="TextureRect" type="TextureRect" parent="CCControl/Over5MovesPopup"]
+margin_right = 256.0
+margin_bottom = 167.0
+texture = ExtResource( 6 )
+expand = true
+
+[node name="Over5TextLabel" type="RichTextLabel" parent="CCControl/Over5MovesPopup/TextureRect"]
+margin_left = 24.0
+margin_top = 8.0
+margin_right = 240.0
+margin_bottom = 120.0
+custom_fonts/normal_font = ExtResource( 11 )
+bbcode_enabled = true
+bbcode_text = "[center][color=#8c1818][tornado radius=1 freq=1]You played 5 or more moves. AI will get point."
+text = "You played 5 or more moves. AI will get point."
+
+[node name="Over5OKButton" type="Button" parent="CCControl/Over5MovesPopup"]
+margin_left = 56.0
+margin_top = 119.0
+margin_right = 95.0
+margin_bottom = 151.0
+custom_fonts/font = ExtResource( 8 )
+text = "OK"
+
+[node name="Over5CancelButton" type="Button" parent="CCControl/Over5MovesPopup"]
+margin_left = 131.0
+margin_top = 118.0
+margin_right = 203.0
+margin_bottom = 150.0
+custom_fonts/font = ExtResource( 8 )
+text = "Cancel"
 
 [node name="decoration" type="Node" parent="CCControl"]
 
@@ -517,4 +556,6 @@ __meta__ = {
 [connection signal="pressed" from="CCControl/TimerPopup/TimerOKButton" to="." method="_on_TimerOKButton_pressed"]
 [connection signal="pressed" from="CCControl/CheckBoxPlayPopup/CheckBoxPlayOK" to="." method="_on_CheckBoxPlayOK_pressed"]
 [connection signal="pressed" from="CCControl/CheckBoxPlayPopup/CheckBoxPlayCancel" to="." method="_on_CheckBoxPlayCancel_pressed"]
+[connection signal="pressed" from="CCControl/Over5MovesPopup/Over5OKButton" to="." method="_on_Over5OKButton_pressed"]
+[connection signal="pressed" from="CCControl/Over5MovesPopup/Over5CancelButton" to="." method="_on_Over5CancelButton_pressed"]
 [connection signal="ready" from="CCControl/TimerRichLabel" to="." method="_on_TimerRichLabel_ready"]

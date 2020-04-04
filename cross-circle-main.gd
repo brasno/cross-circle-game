@@ -127,8 +127,12 @@ func _on_EndCancelButton_pressed():
 
 func _on_NewButton_pressed():
 	pause_timer()
-	$CCControl/NewPopup.visible = !$CCControl/NewPopup.visible
-	$CCControl/NewPopup.show_modal(true)
+	if Global.moves_count>=5:
+		$CCControl/Over5MovesPopup.visible= !$CCControl/Over5MovesPopup.visible
+		$CCControl/Over5MovesPopup.show_modal(true)
+	else:
+		$CCControl/NewPopup.visible = !$CCControl/NewPopup.visible
+		$CCControl/NewPopup.show_modal(true)
 # End of _on_NewButton_pressed()
 
 func _on_EndButton_pressed():
@@ -216,6 +220,7 @@ func _on_TextureRect_gui_input(event):
 			if event.button_index== BUTTON_LEFT:
 				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,Global.current_symbol)
 				Global.matrix[tile_pos.x-1][tile_pos.y-1]=Global.current_symbol
+				Global.moves_count+=1
 #			else:
 #				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,0)
 #				Global.matrix[tile_pos.x-1][tile_pos.y-1]=0
@@ -246,6 +251,7 @@ func new_game():
 			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(x,y,Global.EMPTY)
 			Global.matrix[x-1][y-1]=Global.EMPTY
 	$CCControl/CCNode2D/ScoreRichText.bbcode_text="Score:\t\tYou:"+String(Global.score)+"\t\tAI:"+String(Global.AIscore)
+	Global.moves_count=0
 	start_timer()
 # End of new_game()
 
@@ -332,6 +338,19 @@ func _on_AILevelOption_toggled(button_pressed):
 func _on_SizeOption_pressed():
 	pause_timer()
 # End of _on_SizeOption_pressed()
+
+
+func _on_Over5CancelButton_pressed():
+	$CCControl/Over5MovesPopup.visible = !$CCControl/Over5MovesPopup.visible
+	pass # Replace with function body.
+
+
+func _on_Over5OKButton_pressed():
+	$CCControl/Over5MovesPopup.visible = !$CCControl/Over5MovesPopup.visible
+	Global.AIscore+=1
+	new_game()
+	pass # Replace with function body.
+
 
 func _on_SizeOption_toggled(button_pressed):
 	resume_timer()

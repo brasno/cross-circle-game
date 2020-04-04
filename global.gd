@@ -24,8 +24,10 @@ var y
 # current score
 var score = 0
 var AIscore = 0
-# main tolemap
-onready var tilemap 
+# moves count
+var moves_count=0
+# main tilemap
+# onready var tilemap 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
