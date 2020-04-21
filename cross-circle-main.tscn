@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://paper.jpg" type="Texture" id=1]
 [ext_resource path="res://cross-circle-main.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://x24.png" type="Texture" id=9]
 [ext_resource path="res://o24.png" type="Texture" id=10]
 [ext_resource path="res://CreteRound_dynamicfont_26.tres" type="DynamicFont" id=11]
+[ext_resource path="res://bach.ogg" type="AudioStream" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -52,10 +53,14 @@ margin_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="CCNode2D" type="Node2D" parent="CCControl"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="TextureRect" type="TextureRect" parent="CCControl/CCNode2D"]
 margin_right = 1024.0
@@ -66,11 +71,11 @@ texture = ExtResource( 1 )
 expand = true
 stretch_mode = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="TileMap" type="TileMap" parent="CCControl/CCNode2D/TextureRect"]
-position = Vector2( 0, 1 )
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 24, 24 )
 cell_quadrant_size = 22
@@ -78,6 +83,9 @@ cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 centered_textures = true
 cell_clip_uv = true
 format = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="SpriteX" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
 visible = false
@@ -89,8 +97,18 @@ position = Vector2( 40, 166 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 10 )
 
+[node name="GlobalLight" type="Light2D" parent="CCControl/CCNode2D/TextureRect"]
+visible = false
+position = Vector2( 276, 276 )
+scale = Vector2( 0.39375, 0.7 )
+texture = ExtResource( 1 )
+color = Color( 0.0470588, 0.0352941, 0.0980392, 1 )
+energy = 0.41
+mode = 3
+shadow_color = Color( 0.811765, 0.407843, 0.407843, 0 )
+
 [node name="Light2D" type="Light2D" parent="CCControl/CCNode2D/TextureRect"]
-position = Vector2( 278, 277 )
+position = Vector2( 276, 276 )
 scale = Vector2( 0.39375, 0.7 )
 texture = ExtResource( 1 )
 color = Color( 0.905882, 0.909804, 0.462745, 1 )
@@ -533,6 +551,32 @@ margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MainAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="SoundButton" type="Button" parent="."]
+margin_left = 896.0
+margin_top = 416.0
+margin_right = 965.0
+margin_bottom = 448.0
+hint_tooltip = "Sound on/off"
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_disabled = Color( 0.227451, 0.223529, 0.223529, 1 )
+custom_colors/font_color = Color( 0.980392, 0.992157, 0.721569, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.223529, 0.223529, 1 )
+toggle_mode = true
+text = "Sound"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "
+
+
+
+
+
+"
+}
 [connection signal="ready" from="CCControl/CCNode2D" to="." method="_on_CCNode2D_ready"]
 [connection signal="gui_input" from="CCControl/CCNode2D/TextureRect" to="." method="_on_TextureRect_gui_input"]
 [connection signal="mouse_entered" from="CCControl/CCNode2D/CheckBoxPlay" to="." method="_on_CheckBoxPlay_mouse_entered"]
@@ -559,3 +603,4 @@ __meta__ = {
 [connection signal="pressed" from="CCControl/Over5MovesPopup/Over5OKButton" to="." method="_on_Over5OKButton_pressed"]
 [connection signal="pressed" from="CCControl/Over5MovesPopup/Over5CancelButton" to="." method="_on_Over5CancelButton_pressed"]
 [connection signal="ready" from="CCControl/TimerRichLabel" to="." method="_on_TimerRichLabel_ready"]
+[connection signal="pressed" from="SoundButton" to="." method="_on_SoundButton_pressed"]

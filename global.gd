@@ -29,6 +29,10 @@ var moves_count=0
 # main tilemap
 # onready var tilemap 
 
+#sound
+var play_position_main = 0 
+var play_position_credentials = 0 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	clear_data()

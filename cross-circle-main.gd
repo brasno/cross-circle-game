@@ -84,6 +84,7 @@ func _ready():
 	check_CheckBoxPlay()
 	refresh_score()
 	start_timer()
+	$MainAudioStreamPlayer.play(Global.play_position_main)
 # End of _ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -91,8 +92,13 @@ func _process(delta):
 	_on_TimerRichLabel_ready()
 # End of _process(delta)
 
+func save_state():
+	Global.play_position_main=$MainAudioStreamPlayer.get_playback_position()
+# End of save_state()
+
 func _on_CredentialsButton_pressed():
 	ret=get_tree().change_scene("res://cross-circle-credentials.tscn")
+	save_state()
 	print("Return:",ret)
 # End of _on_CredentialsButton_pressed()
 
@@ -143,6 +149,7 @@ func _on_EndButton_pressed():
 
 func _on_WonOKButton_pressed():
 	$CCControl/SomebodyWonPopup.visible = !$CCControl/SomebodyWonPopup.visible
+	$CCControl/CCNode2D/TextureRect/GlobalLight.visible=!$CCControl/CCNode2D/TextureRect/GlobalLight.visible
 	new_game()
 # End of _on_WonOKButton_pressed()
 
@@ -239,6 +246,7 @@ func _on_TextureRect_gui_input(event):
 					Global.AIscore+=1
 				refresh_score()
 				pause_timer()
+				$CCControl/CCNode2D/TextureRect/GlobalLight.visible=!$CCControl/CCNode2D/TextureRect/GlobalLight.visible
 				$CCControl/SomebodyWonPopup.visible=!$CCControl/SomebodyWonPopup.visible
 				$CCControl/SomebodyWonPopup.show_modal(true)
 				
@@ -338,6 +346,14 @@ func _on_AILevelOption_toggled(button_pressed):
 func _on_SizeOption_pressed():
 	pause_timer()
 # End of _on_SizeOption_pressed()
+
+func _on_SoundButton_pressed():
+	if $MainAudioStreamPlayer.playing==false:
+		$MainAudioStreamPlayer.play(Global.play_position_main)
+	else:
+		Global.play_position_main=$MainAudioStreamPlayer.get_playback_position()
+		$MainAudioStreamPlayer.playing=!$MainAudioStreamPlayer.playing
+	pass # Replace with function body.
 
 
 func _on_Over5CancelButton_pressed():
@@ -632,3 +648,5 @@ func find_weight(pattern):
 		_:
 			b=0
 	return(b)
+
+

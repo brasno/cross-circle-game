@@ -8,6 +8,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$CredentialsAudioStreamPlayer.play(Global.play_position_credentials)
 	pass # Replace with function body.
 
 
@@ -15,8 +16,13 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func save_state():
+	Global.play_position_credentials=$CredentialsAudioStreamPlayer.get_playback_position()
+# End of save_state()
+
 var ret
 func _on_OKButton_pressed():
+	save_state()
 	ret=get_tree().change_scene("res://cross-circle-main.tscn")
 	pass # Replace with function body.
 
