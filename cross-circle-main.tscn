@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://paper.jpg" type="Texture" id=1]
 [ext_resource path="res://cross-circle-main.gd" type="Script" id=2]
@@ -9,9 +9,11 @@
 [ext_resource path="res://CreteRound-Regular.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://CreteRound_dynamicfont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://x24.png" type="Texture" id=9]
-[ext_resource path="res://o24.png" type="Texture" id=10]
+[ext_resource path="res://Ospriteframes.tres" type="SpriteFrames" id=10]
 [ext_resource path="res://CreteRound_dynamicfont_26.tres" type="DynamicFont" id=11]
 [ext_resource path="res://bach.ogg" type="AudioStream" id=12]
+[ext_resource path="res://o48_6.png" type="Texture" id=14]
+[ext_resource path="res://Xspriteframes.tres" type="SpriteFrames" id=15]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -40,6 +42,24 @@ font_data = ExtResource( 7 )
 [sub_resource type="DynamicFont" id=7]
 size = 20
 font_data = ExtResource( 7 )
+
+[sub_resource type="Animation" id=8]
+length = 2.0
+
+[sub_resource type="Animation" id=9]
+resource_name = "spriteOon"
+tracks/0/type = "value"
+tracks/0/path = NodePath("CCControl/CCNode2D/TextureRect/TileMap/SpriteOx:texture:frames")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5 ]
+}
 
 [node name="cross-circle-main" type="Node2D"]
 script = ExtResource( 2 )
@@ -87,15 +107,34 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="SpriteX" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
+[node name="SpriteX" type="AnimatedSprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
+position = Vector2( 36, 36 )
+scale = Vector2( 0.5, 0.5 )
+frames = ExtResource( 15 )
+animation = "SpriteXon"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SpriteO" type="AnimatedSprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
+position = Vector2( 36, 36 )
+scale = Vector2( 0.5, 0.5 )
+frames = ExtResource( 10 )
+animation = "SpriteOon"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SpriteXo" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
 visible = false
+position = Vector2( 36, 36 )
 texture = ExtResource( 9 )
 
-[node name="SpriteO" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
+[node name="SpriteOx" type="Sprite" parent="CCControl/CCNode2D/TextureRect/TileMap"]
 visible = false
-position = Vector2( 40, 166 )
+position = Vector2( -40, 273 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 10 )
+texture = ExtResource( 14 )
 
 [node name="GlobalLight" type="Light2D" parent="CCControl/CCNode2D/TextureRect"]
 visible = false
@@ -112,6 +151,9 @@ position = Vector2( 276, 276 )
 scale = Vector2( 0.39375, 0.7 )
 texture = ExtResource( 1 )
 color = Color( 0.905882, 0.909804, 0.462745, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="PlayAsRichText" type="RichTextLabel" parent="CCControl/CCNode2D"]
 margin_left = 821.0
@@ -577,8 +619,14 @@ __meta__ = {
 
 "
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/endgame = SubResource( 8 )
+anims/spriteOon = SubResource( 9 )
 [connection signal="ready" from="CCControl/CCNode2D" to="." method="_on_CCNode2D_ready"]
 [connection signal="gui_input" from="CCControl/CCNode2D/TextureRect" to="." method="_on_TextureRect_gui_input"]
+[connection signal="animation_finished" from="CCControl/CCNode2D/TextureRect/TileMap/SpriteX" to="." method="_on_SpriteX_animation_finished"]
+[connection signal="animation_finished" from="CCControl/CCNode2D/TextureRect/TileMap/SpriteO" to="." method="_on_SpriteO_animation_finished"]
 [connection signal="mouse_entered" from="CCControl/CCNode2D/CheckBoxPlay" to="." method="_on_CheckBoxPlay_mouse_entered"]
 [connection signal="mouse_exited" from="CCControl/CCNode2D/CheckBoxPlay" to="." method="_on_CheckBoxPlay_mouse_exited"]
 [connection signal="pressed" from="CCControl/CCNode2D/CheckBoxPlay" to="." method="_on_CheckBoxPlay_pressed"]

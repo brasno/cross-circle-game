@@ -15,10 +15,16 @@ var cellsizey
 onready var line=get_node("CCControl/MyLine")
 const COLUMNS = 7
 const ROWS = 6
+const NOW = 1
 var type=Global.CROSS
 var ret
 var secs
 var move=[]
+
+# draw move now or animate
+var now 
+var choosen_move=Vector2(-1,-1)
+var queue=[]
 
 func createLineLR(from, to):
 	line.add_point(from)
@@ -88,7 +94,7 @@ func _ready():
 # End of _ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	_on_TimerRichLabel_ready()
 # End of _process(delta)
 
@@ -176,7 +182,7 @@ func _on_CCNode2D_ready():
 
 # End of _on_CCNode2D_ready()
 
-func _on_AILevelOption_item_selected(id):
+func _on_AILevelOption_item_selected(_id):
 	Global.AILevel_index=$CCControl/CCNode2D/AILevelOption.get_selected_id()
 	resume_timer()
 # End of _on_AILevelOption_item_selected(id)
@@ -213,10 +219,9 @@ func check_move():
 				if countRB==5:
 					print ("CountRB=5 ",x," ",y)
 					return 1
-	
 	return 0
-	pass # Replace with function body.
-	
+# End of check_move()
+
 func _on_TextureRect_gui_input(event):
 #	if event.is_pressed() and (event.button_index== BUTTON_LEFT or event.button_index== BUTTON_RIGHT):
 	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
@@ -225,19 +230,24 @@ func _on_TextureRect_gui_input(event):
 		if (tile_pos.x>0) and (tile_pos.x<=Global.WIDTH) and (tile_pos.y>0) and (tile_pos.y<=Global.HEIGHT) and (Global.matrix[tile_pos.x-1][tile_pos.y-1]==Global.EMPTY): 
 			start_timer()
 			if event.button_index== BUTTON_LEFT:
-				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,Global.current_symbol)
 				Global.matrix[tile_pos.x-1][tile_pos.y-1]=Global.current_symbol
+				choosen_move=Vector2(tile_pos.x-1,tile_pos.y-1)
+				#$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,Global.current_symbol)
 				Global.moves_count+=1
 #			else:
 #				$CCControl/CCNode2D/TextureRect/TileMap.set_cell(tile_pos.x,tile_pos.y,0)
 #				Global.matrix[tile_pos.x-1][tile_pos.y-1]=0
 			var result=check_move()
 			if result!=1:
+				draw_move(0)
 # AI play
 				choose_move(2)
 				result=check_move()
+#			else:
+#				draw_move(1)
 			if result==1:
 #				if ($CCControl/CCNode2D/CheckBoxPlay.pressed==false and type==Global.current_symbol) or ($CCControl/CCNode2D/CheckBoxPlay.pressed==true and type==Global.current_symbol):
+				draw_move(NOW)
 				if type==Global.current_symbol:
 					Global.score+=1
 					$CCControl/SomebodyWonPopup/TextureRect/WonTextLabel.text="You won!"
@@ -249,7 +259,9 @@ func _on_TextureRect_gui_input(event):
 				$CCControl/CCNode2D/TextureRect/GlobalLight.visible=!$CCControl/CCNode2D/TextureRect/GlobalLight.visible
 				$CCControl/SomebodyWonPopup.visible=!$CCControl/SomebodyWonPopup.visible
 				$CCControl/SomebodyWonPopup.show_modal(true)
-				
+			else:
+#				print("Draw anima:",choosen_move)
+				draw_move(0)
 		print("Event:", event.position, " Pos:",tile_pos)
 # End of _on_TextureRect_gui_input(event)
 
@@ -260,6 +272,10 @@ func new_game():
 			Global.matrix[x-1][y-1]=Global.EMPTY
 	$CCControl/CCNode2D/ScoreRichText.bbcode_text="Score:\t\tYou:"+String(Global.score)+"\t\tAI:"+String(Global.AIscore)
 	Global.moves_count=0
+	$CCControl/CCNode2D/TextureRect/TileMap/SpriteX.stop()
+	$CCControl/CCNode2D/TextureRect/TileMap/SpriteX.frame=0
+	$CCControl/CCNode2D/TextureRect/TileMap/SpriteO.stop()
+	$CCControl/CCNode2D/TextureRect/TileMap/SpriteO.frame=0
 	start_timer()
 # End of new_game()
 
@@ -339,8 +355,9 @@ func _on_AILevelOption_pressed():
 # End of _on_AILevelOption_pressed()
 
 
-func _on_AILevelOption_toggled(button_pressed):
+func _on_AILevelOption_toggled(_button_pressed):
 	resume_timer()
+
 # End of _on_AILevelOption_toggled(button_pressed)
 
 func _on_SizeOption_pressed():
@@ -368,7 +385,7 @@ func _on_Over5OKButton_pressed():
 	pass # Replace with function body.
 
 
-func _on_SizeOption_toggled(button_pressed):
+func _on_SizeOption_toggled(_button_pressed):
 	resume_timer()
 # End of _on_SizeOption_toggled(button_pressed)
 
@@ -378,6 +395,7 @@ func setup_move():
 			for y in range(Global.HEIGHT):
 				move[x].append([])
 				move[x][y]=0
+# End of setup_move()
 
 func choose_move(number):
 	var dirL=0
@@ -497,6 +515,7 @@ func choose_move(number):
 		var maxx=-1
 		var maxy=-1
 		var maxval=0
+		#var sprite
 		for x in range(0,Global.current_size):
 			for y in range(0,Global.current_size):
 				if move[x][y]>maxval:
@@ -505,12 +524,66 @@ func choose_move(number):
 					maxy=y
 		if (Global.current_symbol==Global.CIRCLE):
 			Global.matrix[maxx][maxy]=Global.CROSS
-			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(maxx+1,maxy+1,Global.CROSS)
+			#choosen_move=Vector2(maxx,maxy)
+			#draw_move(1)
+			#$CCControl/CCNode2D/TextureRect/TileMap.set_cell(maxx+1,maxy+1,Global.CROSS)
 		else:
 			Global.matrix[maxx][maxy]=Global.CIRCLE
-			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(maxx+1,maxy+1,Global.CIRCLE)
+			#draw_move(1)
+			#sprite=$CCControl/CCNode2D/TextureRect/TileMap/SpriteO
+		choosen_move=Vector2(maxx,maxy)
+		print("AI move:",maxx+1," ",maxy+1)
+			#sprite.scale=Vector2(.5,.5)
+			#tilemap= get_node("CCControl/CCNode2D/TextureRect/TileMap")
+			#cellsizex=tilemap.cell_size.x/sprite.scale.x;
+			#cellsizey=tilemap.cell_size.y/sprite.scale.y;
+			#sprite.offset=Vector2(cellsizex*(maxx),cellsizey*(maxy))
+			#sprite.play("default")
+			#queue.push_back([maxx+1,maxy+1])
+			#sprite.frame=0
 	else:
 		return 1
+
+func draw_move(when):
+	var sprite
+	if when == NOW:
+		$CCControl/CCNode2D/TextureRect/TileMap.set_cell(choosen_move.x+1,choosen_move.y+1,
+		Global.matrix[choosen_move.x][choosen_move.y])
+	else:
+		if Global.matrix[choosen_move.x][choosen_move.y]==Global.CIRCLE:
+			sprite=$CCControl/CCNode2D/TextureRect/TileMap/SpriteO
+		else:
+			sprite=$CCControl/CCNode2D/TextureRect/TileMap/SpriteX
+		sprite.scale=Vector2(.5,.5)
+		tilemap= get_node("CCControl/CCNode2D/TextureRect/TileMap")
+		cellsizex=tilemap.cell_size.x/sprite.scale.x;
+		cellsizey=tilemap.cell_size.y/sprite.scale.y;
+		sprite.offset=Vector2(cellsizex*(choosen_move.x),cellsizey*(choosen_move.y))
+		if Global.matrix[choosen_move.x][choosen_move.y]==Global.CIRCLE:
+			sprite.play("SpriteOon")
+		else:
+			sprite.play("SpriteXon")
+		queue.push_back([choosen_move.x+1,choosen_move.y+1])
+		sprite.frame=0
+# End of draw_move()
+
+func _on_SpriteO_animation_finished():
+	var xy
+	while len(queue) >0:
+		xy=queue.pop_front()
+		if Global.matrix[xy[0]-1][xy[1]-1]==Global.CIRCLE:
+			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(xy[0],xy[1],Global.CIRCLE)
+			#$CCControl/CCNode2D/TextureRect/TileMap/SpriteO.frame=0
+		else:
+			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(xy[0],xy[1],Global.CROSS)
+			#$CCControl/CCNode2D/TextureRect/TileMap/SpriteX.frame=0
+#	sprite.frame=0
+# End of _on_SpriteO_animation_finished()
+
+func _on_SpriteX_animation_finished():
+	_on_SpriteO_animation_finished()
+	pass # Replace with function body.
+
 
 func find_weight(pattern):
 	var b
@@ -544,7 +617,7 @@ func find_weight(pattern):
 		0111:
 			b=800
 		1111:
-			b=10000
+			b=100000
 		2000:
 			b=10
 		0200:
@@ -648,5 +721,3 @@ func find_weight(pattern):
 		_:
 			b=0
 	return(b)
-
-
