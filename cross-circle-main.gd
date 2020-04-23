@@ -561,8 +561,10 @@ func draw_move(when):
 		sprite.offset=Vector2(cellsizex*(choosen_move.x),cellsizey*(choosen_move.y))
 		if Global.matrix[choosen_move.x][choosen_move.y]==Global.CIRCLE:
 			sprite.play("SpriteOon")
+			$EventsAudioStreamPlayerO.play(0)
 		else:
 			sprite.play("SpriteXon")
+			$EventsAudioStreamPlayerX.play(0)
 		queue.push_back([choosen_move.x+1,choosen_move.y+1])
 		sprite.frame=0
 # End of draw_move()
@@ -573,9 +575,11 @@ func _on_SpriteO_animation_finished():
 		xy=queue.pop_front()
 		if Global.matrix[xy[0]-1][xy[1]-1]==Global.CIRCLE:
 			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(xy[0],xy[1],Global.CIRCLE)
+			$EventsAudioStreamPlayerO.stop()
 			#$CCControl/CCNode2D/TextureRect/TileMap/SpriteO.frame=0
 		else:
 			$CCControl/CCNode2D/TextureRect/TileMap.set_cell(xy[0],xy[1],Global.CROSS)
+			$EventsAudioStreamPlayerX.stop()
 			#$CCControl/CCNode2D/TextureRect/TileMap/SpriteX.frame=0
 #	sprite.frame=0
 # End of _on_SpriteO_animation_finished()
@@ -721,3 +725,32 @@ func find_weight(pattern):
 		_:
 			b=0
 	return(b)
+
+
+func _on_MinButton_pressed():
+	var volume
+	var node=$SoundVolume/VolumeProgress
+	volume=node.value-node.step
+	$MainAudioStreamPlayer.volume_db=volume
+	node.value=$MainAudioStreamPlayer.volume_db
+
+func _on_MaxButton_pressed():
+	var volume
+	var node=$SoundVolume/VolumeProgress
+	volume=node.value+node.step
+	$MainAudioStreamPlayer.volume_db=volume
+	node.value=$MainAudioStreamPlayer.volume_db
+	
+
+
+func _on_VolumeProgress_gui_input(event):
+	var volume
+	var node=$SoundVolume/VolumeProgress
+
+	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
+		volume=node.min_value+(node.max_value-node.min_value)*event.position.x/node.rect_size.x;
+		$MainAudioStreamPlayer.volume_db=volume
+		node.value=$MainAudioStreamPlayer.volume_db
+		print("size:",$SoundVolume/VolumeProgress.rect_size.x)
+		print("event",event.position.x)
+	pass # Replace with function body.
