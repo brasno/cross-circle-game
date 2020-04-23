@@ -604,11 +604,15 @@ __meta__ = {
 stream = ExtResource( 12 )
 bus = "Music"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/endgame = SubResource( 8 )
+anims/spriteOon = SubResource( 9 )
+
 [node name="SoundButton" type="Button" parent="."]
 margin_left = 760.0
-margin_top = 400.0
+margin_top = 408.0
 margin_right = 829.0
-margin_bottom = 432.0
+margin_bottom = 440.0
 hint_tooltip = "Sound on/off"
 custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color_disabled = Color( 0.227451, 0.223529, 0.223529, 1 )
@@ -627,23 +631,21 @@ __meta__ = {
 "
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/endgame = SubResource( 8 )
-anims/spriteOon = SubResource( 9 )
-
 [node name="SoundVolume" type="Label" parent="."]
-margin_left = 856.0
+margin_left = 840.0
 margin_top = 392.0
-margin_right = 952.0
-margin_bottom = 440.0
+margin_right = 1016.0
+margin_bottom = 448.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VolumeProgress" type="TextureProgress" parent="SoundVolume"]
-margin_left = 16.0
-margin_right = 114.0
-margin_bottom = 50.0
+[node name="SoundProgress" type="TextureProgress" parent="SoundVolume"]
+margin_left = 37.0
+margin_top = 17.0
+margin_right = 135.0
+margin_bottom = 67.0
+rect_scale = Vector2( 1, 0.56 )
 hint_tooltip = "Click!"
 min_value = -40.0
 max_value = 5.0
@@ -655,23 +657,106 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MinButton" type="Button" parent="SoundVolume"]
-anchor_right = 0.089
-margin_left = -16.0
-margin_top = 16.0
-margin_right = -1.544
-margin_bottom = 48.0
+[node name="SoundMinButton" type="Button" parent="SoundVolume"]
+anchor_top = 0.143
+anchor_bottom = 0.143
+margin_left = 3.0
+margin_top = 7.992
+margin_right = 26.0
+margin_bottom = 39.992
+hint_tooltip = "Click to decrease
+Sound volume"
 custom_fonts/font = ExtResource( 8 )
 text = "-"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MaxButton" type="Button" parent="SoundVolume"]
-margin_left = 120.0
+[node name="SoundMaxButton" type="Button" parent="SoundVolume"]
+margin_left = 145.0
 margin_top = 16.0
-margin_right = 143.0
+margin_right = 168.0
 margin_bottom = 48.0
+hint_tooltip = "Click to increase
+Sound volume"
+custom_fonts/font = ExtResource( 8 )
+text = "+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXButton" type="Button" parent="."]
+margin_left = 760.0
+margin_top = 472.0
+margin_right = 829.0
+margin_bottom = 504.0
+hint_tooltip = "FX on/off"
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_disabled = Color( 0.227451, 0.223529, 0.223529, 1 )
+custom_colors/font_color = Color( 0.980392, 0.992157, 0.721569, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.223529, 0.223529, 1 )
+toggle_mode = true
+text = "FX"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXVolume" type="Label" parent="."]
+margin_left = 840.0
+margin_top = 448.0
+margin_right = 1016.0
+margin_bottom = 520.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXProgress" type="TextureProgress" parent="FXVolume"]
+anchor_left = 0.15
+anchor_top = 0.111
+anchor_right = 0.15
+anchor_bottom = 0.111
+margin_left = 11.6
+margin_top = 16.008
+margin_right = 109.6
+margin_bottom = 66.008
+rect_scale = Vector2( 1, 0.560001 )
+hint_tooltip = "Click!"
+min_value = -40.0
+max_value = 5.0
+step = 5.0
+texture_under = ExtResource( 13 )
+texture_progress = ExtResource( 13 )
+tint_under = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXMinButton" type="Button" parent="FXVolume"]
+anchor_top = 0.222
+anchor_bottom = 0.222
+margin_left = 2.0
+margin_top = 8.016
+margin_right = 25.0
+margin_bottom = 40.016
+hint_tooltip = "Click to decrease
+FX volume"
+custom_fonts/font = ExtResource( 8 )
+text = "-"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXMaxButton" type="Button" parent="FXVolume"]
+anchor_left = 2.873
+anchor_top = 4.429
+anchor_right = 2.873
+anchor_bottom = 4.429
+margin_left = -361.648
+margin_top = -294.888
+margin_right = -338.648
+margin_bottom = -262.888
+hint_tooltip = "Click to increase
+FX volume"
 custom_fonts/font = ExtResource( 8 )
 text = "+"
 __meta__ = {
@@ -680,9 +765,11 @@ __meta__ = {
 
 [node name="EventsAudioStreamPlayerO" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
+bus = "Effects"
 
 [node name="EventsAudioStreamPlayerX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 17 )
+bus = "Effects"
 [connection signal="ready" from="CCControl/CCNode2D" to="." method="_on_CCNode2D_ready"]
 [connection signal="gui_input" from="CCControl/CCNode2D/TextureRect" to="." method="_on_TextureRect_gui_input"]
 [connection signal="animation_finished" from="CCControl/CCNode2D/TextureRect/TileMap/SpriteX" to="." method="_on_SpriteX_animation_finished"]
@@ -712,6 +799,10 @@ stream = ExtResource( 17 )
 [connection signal="pressed" from="CCControl/Over5MovesPopup/Over5CancelButton" to="." method="_on_Over5CancelButton_pressed"]
 [connection signal="ready" from="CCControl/TimerRichLabel" to="." method="_on_TimerRichLabel_ready"]
 [connection signal="pressed" from="SoundButton" to="." method="_on_SoundButton_pressed"]
-[connection signal="gui_input" from="SoundVolume/VolumeProgress" to="." method="_on_VolumeProgress_gui_input"]
-[connection signal="pressed" from="SoundVolume/MinButton" to="." method="_on_MinButton_pressed"]
-[connection signal="pressed" from="SoundVolume/MaxButton" to="." method="_on_MaxButton_pressed"]
+[connection signal="gui_input" from="SoundVolume/SoundProgress" to="." method="_on_SoundProgress_gui_input"]
+[connection signal="pressed" from="SoundVolume/SoundMinButton" to="." method="_on_SoundMinButton_pressed"]
+[connection signal="pressed" from="SoundVolume/SoundMaxButton" to="." method="_on_SoundMaxButton_pressed"]
+[connection signal="pressed" from="FXButton" to="." method="_on_FXButton_pressed"]
+[connection signal="gui_input" from="FXVolume/FXProgress" to="." method="_on_FXProgress_gui_input"]
+[connection signal="pressed" from="FXVolume/FXMinButton" to="." method="_on_FXMinButton_pressed"]
+[connection signal="pressed" from="FXVolume/FXMaxButton" to="." method="_on_FXMaxButton_pressed"]

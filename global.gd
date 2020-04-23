@@ -26,12 +26,24 @@ var score = 0
 var AIscore = 0
 # moves count
 var moves_count=0
-# main tilemap
-# onready var tilemap 
 
-#sound
+#sounds: positions, state  and volumes
 var play_position_main = 0 
+var main_playing = true
 var play_position_credentials = 0 
+var credentials_playing = true
+var play_position_X = 0
+var X_playing = false
+var play_position_O = 0
+var O_playing = false
+var Music_volume = 0
+var FX_volume = 0
+var Music_mute = false
+var FX_mute = false
+
+# Buttons pressed
+var Sound_pressed = false
+var FX_pressed = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

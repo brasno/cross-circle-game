@@ -90,7 +90,7 @@ func _ready():
 	check_CheckBoxPlay()
 	refresh_score()
 	start_timer()
-	$MainAudioStreamPlayer.play(Global.play_position_main)
+	restore_state()
 # End of _ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -98,8 +98,41 @@ func _process(_delta):
 	_on_TimerRichLabel_ready()
 # End of _process(delta)
 
+func restore_state():
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),Global.Music_volume)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"),Global.FX_volume)
+	$SoundVolume/SoundProgress.value=Global.Music_volume
+	$SoundButton.pressed=Global.Sound_pressed
+	$FXVolume/FXProgress.value=Global.FX_volume
+	$FXButton.pressed=Global.FX_pressed
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Effects"),Global.FX_mute)
+	if Global.main_playing==true:
+		$MainAudioStreamPlayer.play(Global.play_position_main)
+	else:
+		$MainAudioStreamPlayer.stop()
+	if Global.X_playing==true:
+		$EventsAudioStreamPlayerX.play(Global.play_position_X)
+	else:
+		$EventsAudioStreamPlayerX.stop()
+	if Global.O_playing==true:
+		$EventsAudioStreamPlayerO.play(Global.play_position_O)
+	else:
+		$EventsAudioStreamPlayerO.stop()
+# End of restore_state()
+
 func save_state():
 	Global.play_position_main=$MainAudioStreamPlayer.get_playback_position()
+	Global.play_position_X=$EventsAudioStreamPlayerX.get_playback_position()
+	Global.play_position_O=$EventsAudioStreamPlayerO.get_playback_position()
+	Global.main_playing=$MainAudioStreamPlayer.playing;
+	Global.X_playing=$EventsAudioStreamPlayerX.playing;
+	Global.O_playing=$EventsAudioStreamPlayerO.playing;
+	Global.Music_volume=AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
+	Global.FX_volume=AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Effects"))
+	Global.FX_mute=AudioServer.is_bus_mute(AudioServer.get_bus_index("Effects"))
+	Global.Sound_pressed=$SoundButton.pressed
+	Global.FX_pressed=$FXButton.pressed;
+	
 # End of save_state()
 
 func _on_CredentialsButton_pressed():
@@ -384,7 +417,6 @@ func _on_Over5OKButton_pressed():
 	new_game()
 	pass # Replace with function body.
 
-
 func _on_SizeOption_toggled(_button_pressed):
 	resume_timer()
 # End of _on_SizeOption_toggled(button_pressed)
@@ -396,6 +428,79 @@ func setup_move():
 				move[x].append([])
 				move[x][y]=0
 # End of setup_move()
+
+# Start/Stop Effects Audio Streams
+func _on_FXButton_pressed():
+	print("Prije:",AudioServer.is_bus_mute(AudioServer.get_bus_index("Effects")))
+	if AudioServer.is_bus_mute(AudioServer.get_bus_index("Effects")):
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Effects"),false)
+	else:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Effects"),true)
+	print("Poslije:",AudioServer.is_bus_mute(AudioServer.get_bus_index("Effects")))
+#	var node = $EventsAudioStreamPlayerO
+#	if node.playing==false:
+#		node.play(Global.play_position_O)
+#	else:
+#		Global.play_position_O=node.get_playback_position()
+#		node.playing=!node.playing
+#	node = $EventsAudioStreamPlayerX
+#	if node.playing==false:
+#		node.play(Global.play_position_X)
+#	else:
+#		Global.play_position_X=node.get_playback_position()
+#		node.playing=!node.playing
+# End of _on_FXButton_pressed()
+
+func _on_SoundMinButton_pressed():
+	var volume
+	var node=$SoundVolume/SoundProgress
+	volume=node.value-node.step
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),volume)
+	node.value=volume
+# End of _on_MinButton_pressed()
+
+func _on_SoundMaxButton_pressed():
+	var volume
+	var node=$SoundVolume/SoundProgress
+	volume=node.value+node.step
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),volume)
+	node.value=volume
+# End of _on_MaxButton_pressed()
+
+func _on_SoundProgress_gui_input(event):
+	var volume
+	var node=$SoundVolume/SoundProgress
+	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
+		volume=node.min_value+(node.max_value-node.min_value)*event.position.x/node.rect_size.x;
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),volume)
+		node.value=volume
+# End of _on_SoundProgress_gui_input(event)
+
+func _on_FXProgress_gui_input(event):
+	var volume
+	var node=$FXVolume/FXProgress
+	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
+		volume=node.min_value+(node.max_value-node.min_value)*event.position.x/node.rect_size.x;
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"),volume)
+		node.value=volume
+# End of _on_SoundProgress_gui_input(event)
+
+func _on_FXMinButton_pressed():
+	var volume
+	var node=$FXVolume/FXProgress
+	volume=node.value-node.step
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"),volume)
+	node.value=volume
+# End of _on_MinButton_pressed()
+
+func _on_FXMaxButton_pressed():
+	var volume
+	var node=$FXVolume/FXProgress
+	volume=node.value+node.step
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Effects"),volume)
+	node.value=volume
+# End of _on_MaxButton_pressed()
+
 
 func choose_move(number):
 	var dirL=0
@@ -561,9 +666,11 @@ func draw_move(when):
 		sprite.offset=Vector2(cellsizex*(choosen_move.x),cellsizey*(choosen_move.y))
 		if Global.matrix[choosen_move.x][choosen_move.y]==Global.CIRCLE:
 			sprite.play("SpriteOon")
+#			if Global.FX_volume > -40:
 			$EventsAudioStreamPlayerO.play(0)
 		else:
 			sprite.play("SpriteXon")
+#			if Global.FX_volume > -40:
 			$EventsAudioStreamPlayerX.play(0)
 		queue.push_back([choosen_move.x+1,choosen_move.y+1])
 		sprite.frame=0
@@ -727,30 +834,3 @@ func find_weight(pattern):
 	return(b)
 
 
-func _on_MinButton_pressed():
-	var volume
-	var node=$SoundVolume/VolumeProgress
-	volume=node.value-node.step
-	$MainAudioStreamPlayer.volume_db=volume
-	node.value=$MainAudioStreamPlayer.volume_db
-
-func _on_MaxButton_pressed():
-	var volume
-	var node=$SoundVolume/VolumeProgress
-	volume=node.value+node.step
-	$MainAudioStreamPlayer.volume_db=volume
-	node.value=$MainAudioStreamPlayer.volume_db
-	
-
-
-func _on_VolumeProgress_gui_input(event):
-	var volume
-	var node=$SoundVolume/VolumeProgress
-
-	if event.is_pressed() and (event.button_index==BUTTON_LEFT):
-		volume=node.min_value+(node.max_value-node.min_value)*event.position.x/node.rect_size.x;
-		$MainAudioStreamPlayer.volume_db=volume
-		node.value=$MainAudioStreamPlayer.volume_db
-		print("size:",$SoundVolume/VolumeProgress.rect_size.x)
-		print("event",event.position.x)
-	pass # Replace with function body.
