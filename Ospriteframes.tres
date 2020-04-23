@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=8 format=2]
 
-[ext_resource path="res://o48x.png" type="Texture" id=1]
+[ext_resource path="res://graphics/sprites/O/o48x.png" type="Texture" id=1]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
